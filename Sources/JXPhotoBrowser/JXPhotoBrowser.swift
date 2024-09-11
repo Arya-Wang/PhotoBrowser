@@ -145,7 +145,26 @@ open class JXPhotoBrowser: UIViewController, UIViewControllerTransitioningDelega
         view.backgroundColor = .green
        return view
     }()
-
+    
+    
+    open var titleString: String = "" {
+        didSet {
+            navView.titleLabel.text = titleString
+        }
+    }
+    
+    open var closeImage: UIImage? = nil {
+        didSet {
+            navView.closeImageView.image = closeImage
+        }
+    }
+    
+    open var saveImage: UIImage? = nil {
+        didSet {
+            saveImageView.image = saveImage
+        }
+    }
+    
     public init() {
         super.init(nibName: nil, bundle: nil)
     }

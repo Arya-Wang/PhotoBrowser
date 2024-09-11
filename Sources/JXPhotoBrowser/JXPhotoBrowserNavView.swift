@@ -8,6 +8,8 @@
 import Foundation
 
 class JXPhotoBrowserNavView: UIView, JXPhotoBrowserPageIndicator {
+    /// 弱引用PhotoBrowser
+    open weak var photoBrowser: JXPhotoBrowser?
     
     open lazy var closeImageView: UIImageView = {
         let view = UIImageView()
@@ -63,6 +65,16 @@ class JXPhotoBrowserNavView: UIView, JXPhotoBrowserPageIndicator {
         pageStackView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.25)
         pageStackView.layer.cornerRadius = 10
         pageStackView.layer.masksToBounds = true
+        
+        // 单击手势
+        let closeTap = UITapGestureRecognizer(target: self, action: #selector(closeTap(_:)))
+        closeImageView.isUserInteractionEnabled = true
+        closeImageView.addGestureRecognizer(closeTap)
+    }
+    
+    /// 单击
+    @objc open func closeTap(_ tap: UITapGestureRecognizer) {
+        photoBrowser?.dismiss()
     }
     
     required init?(coder: NSCoder) {
