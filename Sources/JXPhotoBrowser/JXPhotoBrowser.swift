@@ -11,6 +11,26 @@ import UIKit
 /// 图片浏览器
 /// - 不支持复用，每次使用请新建实例
 open class JXPhotoBrowser: UIViewController, UIViewControllerTransitioningDelegate, UINavigationControllerDelegate {
+    ///  页码与顶部的距离
+    open lazy var topPadding: CGFloat = {
+        if #available(iOS 11.0, *) {
+            let window = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
+            if let window = window {
+                return window.safeAreaInsets.top
+            }
+        }
+        return 20
+    }()
+    
+    open lazy var bottomPadding: CGFloat = {
+        if #available(iOS 11.0, *) {
+            let window = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
+            if let window = window {
+                return window.safeAreaInsets.bottom
+            }
+        }
+        return 0
+    }()
     
     /// 通过本回调，把图片浏览器嵌套在导航控制器里
     public typealias PresentEmbedClosure = (JXPhotoBrowser) -> UINavigationController
@@ -112,6 +132,20 @@ open class JXPhotoBrowser: UIViewController, UIViewControllerTransitioningDelega
     
     open weak var previousNavigationControllerDelegate: UINavigationControllerDelegate?
     
+    // 顶部导航栏
+    lazy var navView: JXPhotoBrowserNavView = {
+       let view = JXPhotoBrowserNavView(frame: CGRectZero)
+       view.backgroundColor = .red
+       return view
+    }()
+    
+    // 保持按钮
+    lazy var saveImageView: UIImageView = {
+       let view = UIImageView()
+        view.backgroundColor = .green
+       return view
+    }()
+
     public init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -141,6 +175,7 @@ open class JXPhotoBrowser: UIViewController, UIViewControllerTransitioningDelega
     open func reloadData() {
         browserView.reloadData()
         pageIndicator?.reloadData(numberOfItems: numberOfItems(), pageIndex: pageIndex)
+        navView.reloadData(numberOfItems: numberOfItems(), pageIndex: pageIndex)
     }
     
     open override func viewDidLoad() {
@@ -154,22 +189,29 @@ open class JXPhotoBrowser: UIViewController, UIViewControllerTransitioningDelega
         view.backgroundColor = .clear
         view.addSubview(maskView)
         view.addSubview(browserView)
-        
+        view.addSubview(navView)
+        view.addSubview(saveImageView)
+
         browserView.didChangedPageIndex = { [weak self] index in
             guard let `self` = self else { return }
             self.pageIndicator?.didChanged(pageIndex: index)
+            self.navView.didChanged(pageIndex: index)
             self.didChangedPageIndex(index)
         }
-        
+        navView.titleLabel.text = "哈哈哈哈"
         view.setNeedsLayout()
         view.layoutIfNeeded()
     }
     
     open override func viewWillLayoutSubviews() {
+     
         super.viewWillLayoutSubviews()
         maskView.frame = view.bounds
         browserView.frame = view.bounds
+        navView.frame = CGRect(x: 0, y: topPadding, width:  UIScreen.main.bounds.width , height: 44)
+        saveImageView.frame = CGRect(x: UIScreen.main.bounds.width - 49 - 12, y: UIScreen.main.bounds.height - 49 - bottomPadding, width: 49 , height: 49)
         pageIndicator?.reloadData(numberOfItems: numberOfItems(), pageIndex: pageIndex)
+        navView.reloadData(numberOfItems: numberOfItems(), pageIndex: pageIndex)
     }
     
     open override func viewWillAppear(_ animated: Bool) {
@@ -243,6 +285,7 @@ open class JXPhotoBrowser: UIViewController, UIViewControllerTransitioningDelega
     open func dismiss() {
         let animated = willDismiss?(self) ?? true
         pageIndicator?.removeFromSuperview()
+        navView.removeFromSuperview()
         if presentingViewController != nil {
             presentingViewController?.dismiss(animated: animated) { [weak self] in
                 if let `self` = self {

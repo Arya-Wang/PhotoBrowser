@@ -18,5 +18,7 @@
   "platforms": {
     "ios": "11.0"
   },
-  "source_files": "Sources/JXPhotoBrowser/*"
+  "swift_versions": "5.0",
+  "source_files": "Sources/JXPhotoBrowser/*",
+  "swift_version": "5.0"
 }
