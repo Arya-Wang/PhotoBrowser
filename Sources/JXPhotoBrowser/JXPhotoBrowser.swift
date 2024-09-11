@@ -159,7 +159,7 @@ open class JXPhotoBrowser: UIViewController, UIViewControllerTransitioningDelega
         }
     }
     
-    open var saveBlock: ((Int) -> Void)?
+    open var saveClouse: ((Int) -> Void)?
 
     open var saveImage: UIImage? = nil {
         didSet {
@@ -287,7 +287,7 @@ open class JXPhotoBrowser: UIViewController, UIViewControllerTransitioningDelega
     
     /// 单击
     @objc open func saveTap(_ tap: UITapGestureRecognizer) {
-        saveBlock?(browserView.pageIndex)
+        saveClouse?(browserView.pageIndex)
     }
     
     //

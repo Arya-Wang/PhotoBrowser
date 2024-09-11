@@ -47,7 +47,7 @@ class KingfisherImageViewController: BaseCollectionViewController {
             let cell = collectionView.cellForItem(at: path) as? BaseCollectionViewCell
             return cell?.imageView
         })
-        browser.saveBlock = { pageIndex in
+        browser.saveClouse = { pageIndex in
             // 判断图片是否下载完成，下载完成保存
             
         }
