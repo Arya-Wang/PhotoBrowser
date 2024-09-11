@@ -135,7 +135,7 @@ open class JXPhotoBrowser: UIViewController, UIViewControllerTransitioningDelega
     // 顶部导航栏
     lazy var navView: JXPhotoBrowserNavView = {
        let view = JXPhotoBrowserNavView(frame: CGRectZero)
-       view.backgroundColor = .red
+        view.photoBrowser = self
        return view
     }()
     
@@ -159,6 +159,8 @@ open class JXPhotoBrowser: UIViewController, UIViewControllerTransitioningDelega
         }
     }
     
+    open var saveBlock: ((Int) -> Void)?
+
     open var saveImage: UIImage? = nil {
         didSet {
             saveImageView.image = saveImage
@@ -217,7 +219,13 @@ open class JXPhotoBrowser: UIViewController, UIViewControllerTransitioningDelega
             self.navView.didChanged(pageIndex: index)
             self.didChangedPageIndex(index)
         }
-        navView.titleLabel.text = "哈哈哈哈"
+        navView.titleLabel.text = titleString
+        
+        // 单击手势
+        let saveTap = UITapGestureRecognizer(target: self, action: #selector(saveTap(_:)))
+        saveImageView.isUserInteractionEnabled = true
+        saveImageView.addGestureRecognizer(saveTap)
+     
         view.setNeedsLayout()
         view.layoutIfNeeded()
     }
@@ -275,6 +283,11 @@ open class JXPhotoBrowser: UIViewController, UIViewControllerTransitioningDelega
                 navigationController?.setNavigationBarHidden(barHidden, animated: false)
             }
         }
+    }
+    
+    /// 单击
+    @objc open func saveTap(_ tap: UITapGestureRecognizer) {
+        saveBlock?(browserView.pageIndex)
     }
     
     //
