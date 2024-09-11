@@ -142,7 +142,7 @@ open class JXPhotoBrowser: UIViewController, UIViewControllerTransitioningDelega
     // 保持按钮
     lazy var saveImageView: UIImageView = {
        let view = UIImageView()
-        view.backgroundColor = .green
+        view.backgroundColor = .clear
        return view
     }()
     
