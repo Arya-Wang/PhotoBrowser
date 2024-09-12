@@ -21,7 +21,25 @@ import JXPhotoBrowser
 import AVKit
 
 class VideoCell: UIView, JXPhotoBrowserCell, UIGestureRecognizerDelegate {
+    open lazy var topPadding: CGFloat = {
+        if #available(iOS 11.0, *) {
+            let window = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
+            if let window = window {
+                return window.safeAreaInsets.top
+            }
+        }
+        return 20
+    }()
     
+    open lazy var bottomPadding: CGFloat = {
+        if #available(iOS 11.0, *) {
+            let window = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
+            if let window = window {
+                return window.safeAreaInsets.bottom
+            }
+        }
+        return 0
+    }()
     weak var photoBrowser: JXPhotoBrowser?
     
     lazy var player = AVPlayer()
@@ -43,13 +61,13 @@ class VideoCell: UIView, JXPhotoBrowserCell, UIGestureRecognizerDelegate {
         let tap = UITapGestureRecognizer(target: self, action: #selector(click))
         addGestureRecognizer(tap)
         addSubview(bgView)
-        bgView.backgroundColor = UIColor.yellow
+        bgView.backgroundColor = UIColor.clear
         playerVc.player = player
         bgView.addSubview(playerVc.view)
         /// 拖动手势
         addPanGesture()
         
-        bgView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        self.bgView.frame = CGRect(x: 0, y: self.topPadding + 44, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height -  self.topPadding - 44 -  bottomPadding)
     }
     
     required init?(coder: NSCoder) {
@@ -152,7 +170,7 @@ class VideoCell: UIView, JXPhotoBrowserCell, UIGestureRecognizerDelegate {
 //            if needResetSize {
 //                self.imageView.bounds.size = size
 //            }
-            self.bgView.frame = self.bounds
+            self.bgView.frame = CGRect(x: 0, y: self.topPadding + 44, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height -  self.topPadding - 44 -  self.bottomPadding)
         }
     }
     

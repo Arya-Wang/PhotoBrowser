@@ -140,12 +140,18 @@ open class JXPhotoBrowser: UIViewController, UIViewControllerTransitioningDelega
     }()
     
     // 保持按钮
-    lazy var saveImageView: UIImageView = {
+    open lazy var saveImageView: UIImageView = {
        let view = UIImageView()
         view.backgroundColor = .clear
        return view
     }()
     
+    // 隐藏导航栏分页展示
+    open var hiddernPage: Bool = false {
+        didSet {
+            navView.pageStackView.isHidden = true
+        }
+    }
     
     open var titleString: String = "" {
         didSet {

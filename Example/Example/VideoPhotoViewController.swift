@@ -76,6 +76,7 @@ class VideoPhotoViewController: BaseCollectionViewController {
             return cell?.imageView
         })
         browser.pageIndex = indexPath.item
+        browser.hiddernPage = true
         browser.show()
     }
 }
