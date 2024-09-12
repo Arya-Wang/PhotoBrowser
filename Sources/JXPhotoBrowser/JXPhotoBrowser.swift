@@ -133,7 +133,7 @@ open class JXPhotoBrowser: UIViewController, UIViewControllerTransitioningDelega
     open weak var previousNavigationControllerDelegate: UINavigationControllerDelegate?
     
     // 顶部导航栏
-    lazy var navView: JXPhotoBrowserNavView = {
+    public lazy var navView: JXPhotoBrowserNavView = {
        let view = JXPhotoBrowserNavView(frame: CGRectZero)
         view.photoBrowser = self
        return view

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class JXPhotoBrowserNavView: UIView, JXPhotoBrowserPageIndicator {
+open class JXPhotoBrowserNavView: UIView, JXPhotoBrowserPageIndicator {
     /// 弱引用PhotoBrowser
     open weak var photoBrowser: JXPhotoBrowser?
     
@@ -77,20 +77,20 @@ class JXPhotoBrowserNavView: UIView, JXPhotoBrowserPageIndicator {
         photoBrowser?.dismiss()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(with browser: JXPhotoBrowser) {
+    public func setup(with browser: JXPhotoBrowser) {
         
     }
     
-    func reloadData(numberOfItems: Int, pageIndex: Int) {
+    public func reloadData(numberOfItems: Int, pageIndex: Int) {
         total = numberOfItems
         pageLabel.text = "\(pageIndex + 1)/\(numberOfItems)"
     }
     
-    func didChanged(pageIndex: Int) {
+    public func didChanged(pageIndex: Int) {
         pageLabel.text = "\(pageIndex + 1)/\(total)"
     }
     
